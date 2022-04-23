@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS tb_category;
+
+CREATE TABLE tb_category (
+    ID   BiGINT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255),
+    PRIMARY KEY (ID)
+);
