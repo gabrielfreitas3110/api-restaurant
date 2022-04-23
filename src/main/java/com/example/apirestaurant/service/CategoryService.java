@@ -11,4 +11,7 @@ public class CategoryService {
     @Autowired
     CategoryRepository categoryRepository;
 
+    public Category create(Category category) {
+        return categoryRepository.save(category);
+    }
 }
