@@ -1,5 +1,6 @@
 package com.example.apirestaurant.service;
 
+import com.example.apirestaurant.model.Category;
 import com.example.apirestaurant.model.Product;
 import com.example.apirestaurant.model.dto.ProductRequestDto;
 import com.example.apirestaurant.repository.ProductRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -20,9 +22,14 @@ public class ProductService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private CategoryService categoryService;
+
     public Product create(ProductRequestDto productRequestDto) {
-        verifyDuplicate(productRequestDto.getName());
-        return ProductRepository.save(modelMapper.map(productRequestDto, Product.class));
+        Product p = modelMapper.map(productRequestDto, Product.class);
+        verifyDuplicate(p.getName());
+        p.setCategories(verifyCategories(p.getCategories()));
+        return ProductRepository.save(p);
     }
 
     public List<Product> findAll() {
@@ -50,5 +57,13 @@ public class ProductService {
         Product obj = ProductRepository.findByName(name);
         if(obj != null)
             throw new DuplicatedObjectException("Product with name '"+ name + "' already exits! Id: " + obj.getId());
+    }
+
+    private List<Category> verifyCategories(List<Category> categories) {
+        List<Category> categoryList = categories.stream().map(c -> {
+            Category ca = categoryService.findByName(c.getName());
+            return ca != null ? ca : c;
+        }).collect(Collectors.toList());
+        return categoryList;
     }
 }

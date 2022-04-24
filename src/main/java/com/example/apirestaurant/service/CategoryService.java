@@ -46,8 +46,12 @@ public class CategoryService {
         categoryRepository.delete(obj);
     }
 
+    public Category findByName(String name) {
+        return categoryRepository.findByName(name);
+    }
+
     private void verifyDuplicate(String name) {
-        Category obj = categoryRepository.findByName(name);
+        Category obj = findByName(name);
         if(obj != null)
             throw new DuplicatedObjectException("Category with name '"+ name + "' already exits! Id: " + obj.getId());
     }
