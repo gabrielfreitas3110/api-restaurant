@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     @Autowired
-    ProductRepository ProductRepository;
+    ProductRepository productRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -29,15 +30,15 @@ public class ProductService {
         Product p = modelMapper.map(productRequestDto, Product.class);
         verifyDuplicate(p.getName());
         p.setCategories(verifyCategories(p.getCategories()));
-        return ProductRepository.save(p);
+        return productRepository.save(p);
     }
 
     public List<Product> findAll() {
-        return ProductRepository.findAll();
+        return productRepository.findAll();
     }
 
     public Product findById(Long id) {
-        return ProductRepository.findById(id)
+        return productRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Product not found! Id: "+id));
     }
 
@@ -45,25 +46,32 @@ public class ProductService {
         Product obj = findById(id);
         verifyDuplicate(ProductDto.getName());
         obj.setName(ProductDto.getName());
-        return ProductRepository.save(obj);
+        return productRepository.save(obj);
     }
 
     public void delete(Long id) {
         Product obj = findById(id);
-        ProductRepository.delete(obj);
+        productRepository.delete(obj);
+    }
+
+    public Product findByName(String name) {
+        return productRepository.findByName(name);
     }
 
     private void verifyDuplicate(String name) {
-        Product obj = ProductRepository.findByName(name);
+        Product obj = productRepository.findByName(name);
         if(obj != null)
             throw new DuplicatedObjectException("Product with name '"+ name + "' already exits! Id: " + obj.getId());
     }
 
     private List<Category> verifyCategories(List<Category> categories) {
-        List<Category> categoryList = categories.stream().map(c -> {
-            Category ca = categoryService.findByName(c.getName());
-            return ca != null ? ca : c;
-        }).collect(Collectors.toList());
+        List<Category> categoryList = new ArrayList<>();
+        if(categories != null) {
+            categoryList = categories.stream().map(c -> {
+                Category ca = categoryService.findByName(c.getName());
+                return ca != null ? ca : c;
+            }).collect(Collectors.toList());
+        }
         return categoryList;
     }
 }

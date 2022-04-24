@@ -18,7 +18,7 @@ class CategoryRequestDtoTest {
         assertNull(c.getName());
         c.setName("Food");
         assertEquals(c.getName(), "Food");
-        c = new CategoryRequestDto("Drink");
+        c = new CategoryRequestDto("Drink", null);
         assertEquals(c.getName(), "Drink");
         c = CategoryRequestDto.builder().name("Combo").build();
         assertEquals(c.getName(), "Combo");

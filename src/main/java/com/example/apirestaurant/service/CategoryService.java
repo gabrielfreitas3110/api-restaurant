@@ -1,6 +1,7 @@
 package com.example.apirestaurant.service;
 
 import com.example.apirestaurant.model.Category;
+import com.example.apirestaurant.model.Product;
 import com.example.apirestaurant.model.dto.CategoryRequestDto;
 import com.example.apirestaurant.repository.CategoryRepository;
 import com.example.apirestaurant.service.exception.DuplicatedObjectException;
@@ -9,20 +10,27 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
 
     @Autowired
-    CategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
 
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private ProductService productService;
+
     public Category create(CategoryRequestDto categoryRequestDto) {
+        Category c = modelMapper.map(categoryRequestDto, Category.class);
         verifyDuplicate(categoryRequestDto.getName());
-        return categoryRepository.save(modelMapper.map((categoryRequestDto), Category.class));
+        c.setProducts(verifyProducts(c.getProducts()));
+        return categoryRepository.save(c);
     }
 
     public List<Category> findAll() {
@@ -54,5 +62,16 @@ public class CategoryService {
         Category obj = findByName(name);
         if(obj != null)
             throw new DuplicatedObjectException("Category with name '"+ name + "' already exits! Id: " + obj.getId());
+    }
+
+    private List<Product> verifyProducts(List<Product> products) {
+        List<Product> productList = new ArrayList<>();
+        if(products != null) {
+            productList = products.stream().map(p -> {
+                Product po = productService.findByName(p.getName());
+                return po != null ? po : p;
+            }).collect(Collectors.toList());
+        }
+        return productList;
     }
 }
