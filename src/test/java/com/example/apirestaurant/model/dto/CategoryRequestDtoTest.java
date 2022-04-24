@@ -10,10 +10,10 @@ import static org.junit.Assert.assertNull;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-class CategoryDtoTest {
+class CategoryRequestDtoTest {
 
     @Test
-    public void should_Sucess_When_CorrectCreateCategoryDto() {
+    public void should_Sucess_When_CorrectCreateCategoryRequestDto() {
         CategoryRequestDto c = new CategoryRequestDto();
         assertNull(c.getName());
         c.setName("Food");
