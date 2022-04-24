@@ -1,43 +1,53 @@
 package com.example.apirestaurant.controller;
 
-import com.example.apirestaurant.model.Category;
-import com.example.apirestaurant.model.dto.CategoryDto;
+import com.example.apirestaurant.model.dto.CategoryRequestDto;
+import com.example.apirestaurant.model.dto.CategoryResponseDto;
 import com.example.apirestaurant.service.CategoryService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/categories")
 public class CategoryController {
 
     @Autowired
-    CategoryService categoryService;
+    private CategoryService categoryService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @PostMapping
-    public Category save(@RequestBody Category category) {
-        return categoryService.create(category);
+    public ResponseEntity<CategoryResponseDto> save(@RequestBody CategoryRequestDto categoryRequestDto) {
+        return ResponseEntity.ok().body(modelMapper
+                .map(categoryService.create(categoryRequestDto), CategoryResponseDto.class));
     }
 
     @GetMapping
-    public List<Category> findAll() {
-        return categoryService.findAll();
+    public ResponseEntity<List<CategoryResponseDto>> findAll() {
+        return ResponseEntity.ok().body(categoryService.findAll().stream()
+                .map(c -> modelMapper.map(c, CategoryResponseDto.class))
+                .collect(Collectors.toList()));
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Category> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(categoryService.findById(id));
+    public ResponseEntity<CategoryResponseDto> findById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(modelMapper
+                .map(categoryService.findById(id), CategoryResponseDto.class));
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Category> update(@PathVariable Long id, @RequestBody CategoryDto categoryDto) {
-        return ResponseEntity.ok().body(categoryService.update(id, categoryDto));
+    public ResponseEntity<CategoryResponseDto> update(@PathVariable Long id, @RequestBody CategoryRequestDto categoryRequestDto) {
+        return ResponseEntity.ok().body(modelMapper
+                .map(categoryService.update(id, categoryRequestDto), CategoryResponseDto.class));
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Category> delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         categoryService.delete(id);
         return ResponseEntity.noContent().build();
     }

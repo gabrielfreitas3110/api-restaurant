@@ -1,10 +1,11 @@
 package com.example.apirestaurant.service;
 
 import com.example.apirestaurant.model.Category;
-import com.example.apirestaurant.model.dto.CategoryDto;
+import com.example.apirestaurant.model.dto.CategoryRequestDto;
 import com.example.apirestaurant.repository.CategoryRepository;
 import com.example.apirestaurant.service.exception.DuplicatedObjectException;
 import com.example.apirestaurant.service.exception.ObjectNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +17,12 @@ public class CategoryService {
     @Autowired
     CategoryRepository categoryRepository;
 
-    public Category create(Category category) {
-        verifyDuplicate(category.getName());
-        return categoryRepository.save(category);
+    @Autowired
+    private ModelMapper modelMapper;
+
+    public Category create(CategoryRequestDto categoryRequestDto) {
+        verifyDuplicate(categoryRequestDto.getName());
+        return categoryRepository.save(modelMapper.map((categoryRequestDto), Category.class));
     }
 
     public List<Category> findAll() {
@@ -30,7 +34,7 @@ public class CategoryService {
                 .orElseThrow(() -> new ObjectNotFoundException("Category not found! Id: "+id));
     }
 
-    public Category update(Long id, CategoryDto categoryDto) {
+    public Category update(Long id, CategoryRequestDto categoryDto) {
         Category obj = findById(id);
         verifyDuplicate(categoryDto.getName());
         obj.setName(categoryDto.getName());

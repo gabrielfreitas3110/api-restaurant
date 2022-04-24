@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "tb_procut")
+@Table(name = "tb_product")
 public class Product {
 
     @Id
