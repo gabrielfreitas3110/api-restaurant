@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS tb_category;
 CREATE TABLE tb_category (
     id   BiGINT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255),
-    PRIMARY KEY (ID)
+    PRIMARY KEY (id)
 );
 
 DROP TABLE IF EXISTS tb_product;
@@ -12,7 +12,7 @@ CREATE TABLE tb_product (
     id   BiGINT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255),
     price DOUBLE,
-    PRIMARY KEY (ID)
+    PRIMARY KEY (id)
 );
 
 DROP TABLE IF EXISTS tb_product_category;
@@ -20,4 +20,21 @@ DROP TABLE IF EXISTS tb_product_category;
 CREATE TABLE tb_product_category (
     product_id BIGINT NOT NULL,
     category_id BIGINT NOT NULL
+);
+
+DROP TABLE IF EXISTS tb_state;
+
+CREATE TABLE tb_state (
+    id   BiGINT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255),
+    PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS tb_city;
+
+CREATE TABLE tb_city (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255),
+    state_id BIGINT,
+    PRIMARY KEY (id)
 );
