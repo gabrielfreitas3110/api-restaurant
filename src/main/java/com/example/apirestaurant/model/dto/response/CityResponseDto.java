@@ -1,5 +1,6 @@
-package com.example.apirestaurant.model.dto;
+package com.example.apirestaurant.model.dto.response;
 
+import com.example.apirestaurant.model.dto.StateWithoutCityDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,9 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-public class ProductWithoutCategoryResponseDto {
+public class CityResponseDto {
 
     private Long id;
-    private String name;
-    private Double price;
+    private StateWithoutCityDto state;
 }

@@ -5,15 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class CategoryResponseDto {
+public class ProductWithoutCategoryDto {
 
     private Long id;
     private String name;
-    private List<ProductWithoutCategoryResponseDto> products;
+    private Double price;
 }

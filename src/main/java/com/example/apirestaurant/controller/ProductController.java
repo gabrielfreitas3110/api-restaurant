@@ -1,8 +1,8 @@
 package com.example.apirestaurant.controller;
 
-import com.example.apirestaurant.model.dto.ProductRequestDto;
-import com.example.apirestaurant.model.dto.ProductResponseDto;
-import com.example.apirestaurant.model.dto.ProductWithoutCategoryResponseDto;
+import com.example.apirestaurant.model.dto.request.ProductRequestDto;
+import com.example.apirestaurant.model.dto.response.ProductResponseDto;
+import com.example.apirestaurant.model.dto.ProductWithoutCategoryDto;
 import com.example.apirestaurant.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +28,9 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductWithoutCategoryResponseDto>> findAll() {
+    public ResponseEntity<List<ProductWithoutCategoryDto>> findAll() {
         return ResponseEntity.ok().body(ProductService.findAll().stream()
-                .map(c -> modelMapper.map(c, ProductWithoutCategoryResponseDto.class))
+                .map(c -> modelMapper.map(c, ProductWithoutCategoryDto.class))
                 .collect(Collectors.toList()));
     }
 

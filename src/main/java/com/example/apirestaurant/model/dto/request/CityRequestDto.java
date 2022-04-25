@@ -1,19 +1,16 @@
-package com.example.apirestaurant.model.dto;
+package com.example.apirestaurant.model.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class ProductRequestDto {
+public class CityRequestDto {
 
     private String name;
-    private Double price;
-    private List<CategoryRequestDto> categories;
+    private StateRequestDto state;
 }

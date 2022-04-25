@@ -5,14 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class CategoryRequestDto {
+public class CityWithoutStateDto {
 
+    private Long id;
     private String name;
-    private List<ProductRequestDto> products;
 }

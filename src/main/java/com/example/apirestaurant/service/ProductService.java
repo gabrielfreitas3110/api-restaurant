@@ -2,7 +2,7 @@ package com.example.apirestaurant.service;
 
 import com.example.apirestaurant.model.Category;
 import com.example.apirestaurant.model.Product;
-import com.example.apirestaurant.model.dto.ProductRequestDto;
+import com.example.apirestaurant.model.dto.request.ProductRequestDto;
 import com.example.apirestaurant.repository.ProductRepository;
 import com.example.apirestaurant.service.exception.DuplicatedObjectException;
 import com.example.apirestaurant.service.exception.ObjectNotFoundException;

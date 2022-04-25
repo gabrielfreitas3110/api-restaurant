@@ -1,5 +1,6 @@
-package com.example.apirestaurant.model.dto;
+package com.example.apirestaurant.model.dto.response;
 
+import com.example.apirestaurant.model.dto.ProductWithoutCategoryDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,10 +12,9 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Data
-public class ProductResponseDto {
+public class CategoryResponseDto {
 
     private Long id;
     private String name;
-    private Double price;
-    private List<CategoryWithoutProductResponseDto> categories;
+    private List<ProductWithoutCategoryDto> products;
 }
