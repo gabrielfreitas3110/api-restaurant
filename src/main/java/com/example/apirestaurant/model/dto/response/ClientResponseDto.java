@@ -21,5 +21,5 @@ public class ClientResponseDto {
     private String cpfOrCnpj;
     private ClientTypeEnum type;
     private List<Address> addresses;
-    private Set<String> cellphones;
+    private Set<String> cellphone;
 }

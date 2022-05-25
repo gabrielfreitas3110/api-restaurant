@@ -1,5 +1,6 @@
 package com.example.apirestaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,6 +25,7 @@ public class State {
 
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "state")
     private List<City> cities = new ArrayList<>();
 }

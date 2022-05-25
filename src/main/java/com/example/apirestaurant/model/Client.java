@@ -32,15 +32,15 @@ public class Client {
 
     @ElementCollection
     @CollectionTable(name = "tb_cellphone")
-    private Set<String> cellphones = new HashSet<>();
+    private Set<String> cellphone = new HashSet<>();
 
-    public Client(Long id, String name, String cpfOrCnpj, ClientTypeEnum type, List<Address> addresses, Set<String> cellphones) {
+    public Client(Long id, String name, String cpfOrCnpj, ClientTypeEnum type, List<Address> addresses, Set<String> cellphone) {
         this.id = id;
         this.name = name;
         this.cpfOrCnpj = cpfOrCnpj;
         this.type = type.getCod();
         this.addresses = addresses;
-        this.cellphones = cellphones;
+        this.cellphone = cellphone;
     }
 
     public ClientTypeEnum getType() {

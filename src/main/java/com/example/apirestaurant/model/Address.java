@@ -1,5 +1,6 @@
 package com.example.apirestaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,6 +28,7 @@ public class Address {
     private String cep;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "client_id")
     private Client client;
 
