@@ -38,3 +38,33 @@ CREATE TABLE tb_city (
     state_id BIGINT,
     PRIMARY KEY (id)
 );
+
+
+DROP TABLE IF EXISTS tb_client;
+
+CREATE TABLE tb_client (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255),
+    cpf_or_cnpj VARCHAR(255),
+    type INTEGER,
+    PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS tb_address;
+
+CREATE TABLE tb_address (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    street VARCHAR(255),
+    number INTEGER,
+    cep VARCHAR(255),
+    client_id BIGINT,
+    city_id BIGINT,
+    PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS tb_cellphone;
+
+CREATE TABLE tb_cellphone (
+    client_id BIGINT NOT NULL,
+    cellphone VARCHAR(255)
+);
