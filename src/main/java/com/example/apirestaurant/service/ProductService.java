@@ -61,7 +61,7 @@ public class ProductService {
     private void verifyDuplicate(String name) {
         Product obj = productRepository.findByName(name);
         if(obj != null)
-            throw new DuplicatedObjectException("Product with name '"+ name + "' already exits! Id: " + obj.getId());
+            throw new DuplicatedObjectException("Product with name '"+ name + "' already exist! Id: " + obj.getId());
     }
 
     private List<Category> verifyCategories(List<Category> categories) {

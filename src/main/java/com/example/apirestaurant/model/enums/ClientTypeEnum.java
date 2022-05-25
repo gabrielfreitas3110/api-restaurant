@@ -1,6 +1,6 @@
 package com.example.apirestaurant.model.enums;
 
-import com.example.apirestaurant.model.exception.IllegalAccessException;
+import com.example.apirestaurant.model.exception.BadRequestException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -21,6 +21,6 @@ public enum ClientTypeEnum {
             if(cod.equals(ct.getCod()))
                 return ct;
         }
-        throw new IllegalAccessException("Invalid id: " + cod);
+        throw new BadRequestException("Invalid id: " + cod);
     }
 }

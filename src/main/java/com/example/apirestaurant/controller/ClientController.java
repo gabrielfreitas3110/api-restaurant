@@ -6,10 +6,7 @@ import com.example.apirestaurant.service.ClientService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/clients")
@@ -25,5 +22,11 @@ public class ClientController {
     public ResponseEntity<ClientResponseDto> save(@RequestBody ClientRequestDto clientRequestDto) {
         return ResponseEntity.ok().body(modelMapper
                 .map(clientService.create(clientRequestDto), ClientResponseDto.class));
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<ClientResponseDto> findById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(modelMapper
+                .map(clientService.findById(id), ClientResponseDto.class));
     }
 }

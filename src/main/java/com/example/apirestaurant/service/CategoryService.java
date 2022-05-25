@@ -65,7 +65,7 @@ public class CategoryService {
     private void verifyDuplicate(String name) {
         Category obj = findByName(name);
         if(obj != null)
-            throw new DuplicatedObjectException("Category with name '"+ name + "' already exits! Id: " + obj.getId());
+            throw new DuplicatedObjectException("Category with name '"+ name + "' already exist! Id: " + obj.getId());
     }
 
     private List<Product> verifyProducts(List<Product> products) {
