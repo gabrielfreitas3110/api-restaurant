@@ -1,5 +1,6 @@
 package com.example.apirestaurant.controller.exception;
 
+import com.example.apirestaurant.service.exception.ConstraintViolationException;
 import com.example.apirestaurant.service.exception.DuplicatedObjectException;
 import com.example.apirestaurant.service.exception.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,12 @@ public class ResourceExceptionHandler {
 
 	@ExceptionHandler(DuplicatedObjectException.class)
 	public ResponseEntity<StandardError> duplicatedObjectException(DuplicatedObjectException e, HttpServletRequest request) {
+		StandardError error = new StandardError(HttpStatus.CONFLICT.value(), e.getMessage(), System.currentTimeMillis());
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+	}
+
+	@ExceptionHandler(ConstraintViolationException.class)
+	public ResponseEntity<StandardError> constraintViolationException(ConstraintViolationException e, HttpServletRequest request) {
 		StandardError error = new StandardError(HttpStatus.CONFLICT.value(), e.getMessage(), System.currentTimeMillis());
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
 	}

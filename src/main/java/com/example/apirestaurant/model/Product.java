@@ -25,7 +25,7 @@ public class Product {
 
     private Double price;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
             name = "tb_product_category",
             joinColumns = { @JoinColumn(name = "product_id") },

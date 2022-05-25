@@ -4,6 +4,7 @@ import com.example.apirestaurant.model.Category;
 import com.example.apirestaurant.model.Product;
 import com.example.apirestaurant.model.dto.request.CategoryRequestDto;
 import com.example.apirestaurant.repository.CategoryRepository;
+import com.example.apirestaurant.service.exception.ConstraintViolationException;
 import com.example.apirestaurant.service.exception.DuplicatedObjectException;
 import com.example.apirestaurant.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -51,6 +52,9 @@ public class CategoryService {
 
     public void delete(Long id) {
         Category obj = findById(id);
+        if(!obj.getProducts().isEmpty())
+            throw new ConstraintViolationException("Can't delete category " + obj.getName()
+                    + ", because it have linked products");
         categoryRepository.delete(obj);
     }
 
