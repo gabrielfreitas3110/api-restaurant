@@ -6,18 +6,19 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum ClientTypeEnum {
+public enum PaymentStatusEnum {
 
-    NATURAL_PERSON(1, "Pessoa Física"),
-    LEGAL_PERSON(2, "Pessoa Jurídica");
+    PENDING(1, "Pendente"),
+    PAID(2, "Pago"),
+    CANCELED(3, "Cancelado");
 
     private Integer id;
     private String description;
 
-    public static ClientTypeEnum toEnum(Integer id) {
+    public static PaymentStatusEnum toEnum(Integer id) {
         if(id == null)
             return null;
-        for(ClientTypeEnum ct : ClientTypeEnum.values()) {
+        for(PaymentStatusEnum ct : PaymentStatusEnum.values()) {
             if(id.equals(ct.getId()))
                 return ct;
         }

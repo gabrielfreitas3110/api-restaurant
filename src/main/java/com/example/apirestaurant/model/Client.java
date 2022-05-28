@@ -34,11 +34,14 @@ public class Client {
     @CollectionTable(name = "tb_cellphone")
     private Set<String> cellphone = new HashSet<>();
 
+    @OneToMany(mappedBy = "client")
+    private List<Order> orders = new ArrayList<>();
+
     public Client(Long id, String name, String cpfOrCnpj, ClientTypeEnum type, List<Address> addresses, Set<String> cellphone) {
         this.id = id;
         this.name = name;
         this.cpfOrCnpj = cpfOrCnpj;
-        this.type = type.getCod();
+        this.type = type.getId();
         this.addresses = addresses;
         this.cellphone = cellphone;
     }
@@ -48,6 +51,6 @@ public class Client {
     }
 
     public void setType(ClientTypeEnum type) {
-        this.type = type.getCod();
+        this.type = type.getId();
     }
 }
