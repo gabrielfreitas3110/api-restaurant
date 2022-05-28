@@ -2,12 +2,16 @@ package com.example.apirestaurant.service;
 
 import com.example.apirestaurant.model.Client;
 import com.example.apirestaurant.model.dto.request.ClientRequestDto;
+import com.example.apirestaurant.model.dto.response.ClientResponseDto;
 import com.example.apirestaurant.repository.ClientRepository;
 import com.example.apirestaurant.service.exception.DuplicatedObjectException;
 import com.example.apirestaurant.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ClientService {
@@ -34,4 +38,11 @@ public class ClientService {
         return clientRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Client not found! Id: "+id));
     }
+
+    public List<ClientResponseDto> findAll() {
+        return clientRepository.findAll().stream()
+                .map(client -> modelMapper.map(client, ClientResponseDto.class))
+                .collect(Collectors.toList());
+    }
+
 }

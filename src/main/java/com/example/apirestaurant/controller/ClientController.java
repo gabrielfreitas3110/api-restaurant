@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/clients")
 public class ClientController {
@@ -28,5 +30,10 @@ public class ClientController {
     public ResponseEntity<ClientResponseDto> findById(@PathVariable Long id) {
         return ResponseEntity.ok().body(modelMapper
                 .map(clientService.findById(id), ClientResponseDto.class));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ClientResponseDto>> findAll() {
+        return ResponseEntity.ok().body(clientService.findAll());
     }
 }
