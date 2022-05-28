@@ -1,12 +1,15 @@
 package com.example.apirestaurant.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "tb_order")
@@ -29,5 +32,8 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "deliveryAddress_id")
     private Address deliveryAddress;
+
+    @OneToMany(mappedBy = "id.order")
+    private List<OrderItem> itens;
 
 }

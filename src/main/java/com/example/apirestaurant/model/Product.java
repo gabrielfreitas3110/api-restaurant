@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -32,4 +33,15 @@ public class Product {
             inverseJoinColumns = { @JoinColumn(name = "category_id") }
     )
     private List<Category> categories;
+
+    @OneToMany(mappedBy = "id.product")
+    private List<OrderItem> orderItems;
+
+    public List<Order> getOrders() {
+        List<Order> orders = new ArrayList<>();
+        for(OrderItem orderItem : orderItems) {
+            orders.add(orderItem.getOrder());
+        }
+        return orders;
+    }
 }

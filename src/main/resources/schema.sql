@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS tb_credit_card_payment;
 DROP TABLE IF EXISTS tb_slip_payment;
 DROP TABLE IF EXISTS tb_payment;
 DROP TABLE IF EXISTS tb_order;
+DROP TABLE IF EXISTS tb_order_item;
 
 CREATE TABLE tb_category (
     id BiGINT NOT NULL AUTO_INCREMENT,
@@ -50,7 +51,6 @@ CREATE TABLE tb_client (
     PRIMARY KEY (id)
 );
 
-
 CREATE TABLE tb_address (
     id BIGINT NOT NULL AUTO_INCREMENT,
     street VARCHAR(255),
@@ -72,7 +72,6 @@ CREATE TABLE tb_credit_card_payment (
     PRIMARY KEY (order_id)
 );
 
-
 CREATE TABLE tb_slip_payment (
     due_date TIMESTAMP,
     pay_date TIMESTAMP,
@@ -80,13 +79,11 @@ CREATE TABLE tb_slip_payment (
     PRIMARY KEY (order_id)
 );
 
-
 CREATE TABLE tb_payment(
     order_id BIGINT NOT NULL,
     payment_status INTEGER,
     PRIMARY KEY (order_id)
 );
-
 
 CREATE TABLE tb_order (
     id BIGINT NOT NULL AUTO_INCREMENT,
@@ -94,6 +91,14 @@ CREATE TABLE tb_order (
     client_id BIGINT,
     delivery_address_id BIGINT,
     PRIMARY KEY (id)
+);
+
+CREATE TABLE tb_order_item (
+    discount DOUBLE PRECISION,
+    quantity INTEGER,
+    price DOUBLE,
+    product_id BIGINT NOT NULL,
+    order_id BIGINT NOT NULL
 );
 
 ALTER TABLE tb_product_category ADD CONSTRAINT FK_product_category_product_id FOREIGN KEY("PRODUCT_ID") REFERENCES tb_product("ID");
@@ -107,3 +112,4 @@ ALTER TABLE tb_slip_payment ADD CONSTRAINT FK_slip_payment_order_id FOREIGN KEY(
 ALTER TABLE tb_payment ADD CONSTRAINT FK_payment_order_id FOREIGN KEY("ORDER_ID") REFERENCES tb_order("ID");
 ALTER TABLE tb_order ADD CONSTRAINT FK_order_delivery_address_id FOREIGN KEY("DELIVERY_ADDRESS_ID") REFERENCES tb_address("ID");
 ALTER TABLE tb_order ADD CONSTRAINT FK_order_client_id FOREIGN KEY("CLIENT_ID") REFERENCES tb_client("ID");
+ALTER TABLE tb_order_item ADD CONSTRAINT PK_order_item_id PRIMARY KEY("ORDER_ID","PRODUCT_ID");
