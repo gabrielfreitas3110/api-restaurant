@@ -1,9 +1,9 @@
 package com.example.apirestaurant.controller;
 
 import com.example.apirestaurant.model.dto.request.ClientRequestDto;
+import com.example.apirestaurant.model.dto.request.ClientUpdateRequestDto;
 import com.example.apirestaurant.model.dto.response.ClientResponseDto;
 import com.example.apirestaurant.service.ClientService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,5 +30,10 @@ public class ClientController {
     @GetMapping
     public ResponseEntity<List<ClientResponseDto>> findAll() {
         return ResponseEntity.ok().body(clientService.findAll());
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<ClientResponseDto> update(@PathVariable Long id, @RequestBody ClientUpdateRequestDto clientUpdateRequestDto) {
+        return ResponseEntity.ok().body(clientService.update(id, clientUpdateRequestDto));
     }
 }

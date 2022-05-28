@@ -2,6 +2,7 @@ package com.example.apirestaurant.service;
 
 import com.example.apirestaurant.model.Client;
 import com.example.apirestaurant.model.dto.request.ClientRequestDto;
+import com.example.apirestaurant.model.dto.request.ClientUpdateRequestDto;
 import com.example.apirestaurant.model.dto.response.ClientResponseDto;
 import com.example.apirestaurant.repository.ClientRepository;
 import com.example.apirestaurant.service.exception.DuplicatedObjectException;
@@ -47,4 +48,14 @@ public class ClientService {
                 .collect(Collectors.toList());
     }
 
+    public ClientResponseDto update(Long id, ClientUpdateRequestDto clientUpdateRequestDto) {
+        Client obj = modelMapper.map(findById(id), Client.class);
+        updateData(obj, clientUpdateRequestDto);
+        return modelMapper.map(clientRepository.save(obj), ClientResponseDto.class);
+    }
+
+    private void updateData(Client obj, ClientUpdateRequestDto clientDto) {
+        if(!clientDto.getName().isEmpty())
+            obj.setName(clientDto.getName());
+    }
 }
