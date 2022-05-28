@@ -22,21 +22,23 @@ public class ClientService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public Client create(ClientRequestDto clientRequestDto) {
+    public ClientResponseDto create(ClientRequestDto clientRequestDto) {
         Client obj = findByCpfOrCnpj(clientRequestDto.getCpfOrCnpj());
         if(obj != null)
             throw new DuplicatedObjectException("Client already exist! Id: " + obj.getId());
-        Client p = modelMapper.map(clientRequestDto, Client.class);
-        return clientRepository.save(p);
+        return modelMapper.map(clientRepository
+                .save(modelMapper.map(clientRequestDto, Client.class)),
+                ClientResponseDto.class);
     }
 
-    public Client findByCpfOrCnpj(String cpfOrCnpj) {
+    private Client findByCpfOrCnpj(String cpfOrCnpj) {
         return clientRepository.findByCpfOrCnpj(cpfOrCnpj);
     }
 
-    public Client findById(Long id) {
-        return clientRepository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundException("Client not found! Id: "+id));
+    public ClientResponseDto findById(Long id) {
+        return modelMapper.map(clientRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Client not found! Id: " + id)),
+                ClientResponseDto.class);
     }
 
     public List<ClientResponseDto> findAll() {

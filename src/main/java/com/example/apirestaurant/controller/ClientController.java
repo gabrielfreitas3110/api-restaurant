@@ -17,19 +17,14 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
     @PostMapping
     public ResponseEntity<ClientResponseDto> save(@RequestBody ClientRequestDto clientRequestDto) {
-        return ResponseEntity.ok().body(modelMapper
-                .map(clientService.create(clientRequestDto), ClientResponseDto.class));
+        return ResponseEntity.ok().body(clientService.create(clientRequestDto));
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<ClientResponseDto> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(modelMapper
-                .map(clientService.findById(id), ClientResponseDto.class));
+        return ResponseEntity.ok().body(clientService.findById(id));
     }
 
     @GetMapping
