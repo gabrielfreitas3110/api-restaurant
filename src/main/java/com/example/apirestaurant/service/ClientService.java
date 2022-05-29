@@ -80,4 +80,12 @@ public class ClientService {
         }
     }
 
+    public ClientResponseDto removeAddress(Long id, Long address_id) {
+        Client obj = modelMapper.map(findById(id), Client.class);
+        Address addressObj = addressService.getById(address_id);
+        obj.removeAddress(addressObj);
+        addressService.delete(address_id);
+        return modelMapper.map(clientRepository.save(obj), ClientResponseDto.class);
+    }
+
 }

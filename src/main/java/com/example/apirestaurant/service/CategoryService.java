@@ -38,20 +38,20 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Category findById(Long id) {
+    public Category getById(Long id) {
         return categoryRepository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundException("Category not found! Id: "+id));
+                .orElseThrow(() -> new ObjectNotFoundException("Category not found! Id: " + id));
     }
 
     public Category update(Long id, CategoryRequestDto categoryDto) {
-        Category obj = findById(id);
+        Category obj = getById(id);
         verifyDuplicate(categoryDto.getName());
         obj.setName(categoryDto.getName());
         return categoryRepository.save(obj);
     }
 
     public void delete(Long id) {
-        Category obj = findById(id);
+        Category obj = getById(id);
         if(!obj.getProducts().isEmpty())
             throw new ConstraintViolationException("Can't delete category " + obj.getName()
                     + ", because it have linked products");

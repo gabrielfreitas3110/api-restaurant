@@ -8,6 +8,7 @@ import com.example.apirestaurant.model.dto.request.AddressRequestDto;
 import com.example.apirestaurant.model.dto.request.StateRequestDto;
 import com.example.apirestaurant.model.exception.BadRequestException;
 import com.example.apirestaurant.repository.AddressRepository;
+import com.example.apirestaurant.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,11 @@ public class AddressService {
 
     public Address create(Address address) {
         return addressRepository.save(address);
+    }
+
+    public Address getById(Long id) {
+        return addressRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Address not found! Id: " + id));
     }
 
     protected Address verifyAddress(Client obj, AddressRequestDto address) {
@@ -60,5 +66,11 @@ public class AddressService {
     protected Address buildAddress(AddressRequestDto address, City city, Client client) {
         return Address.builder().street(address.getStreet()).number(address.getNumber())
                 .cep(address.getCep()).city(city).client(client).build();
+    }
+
+    public void delete(Long id) {
+        Address obj = getById(id);
+        obj.setClient(null);
+        addressRepository.delete(obj);
     }
 }

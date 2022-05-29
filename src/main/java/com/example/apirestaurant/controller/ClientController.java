@@ -39,7 +39,12 @@ public class ClientController {
     }
 
     @PatchMapping(value = "/{id}")
-    public ResponseEntity<ClientResponseDto> updateAddress(@PathVariable Long id, @RequestBody AddressRequestDto addressRequestDto) {
+    public ResponseEntity<ClientResponseDto> addAddress(@PathVariable Long id, @RequestBody AddressRequestDto addressRequestDto) {
         return ResponseEntity.ok().body(clientService.addAddress(id, addressRequestDto));
+    }
+
+    @PatchMapping(value = "/{id}/address/{address_id}")
+    public ResponseEntity<ClientResponseDto> removeAddress(@PathVariable Long id, @PathVariable Long address_id) {
+        return ResponseEntity.ok().body(clientService.removeAddress(id, address_id));
     }
 }
