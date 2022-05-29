@@ -27,7 +27,7 @@ public class Client {
 
     private Integer type;
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<Address> addresses = new ArrayList<>();
 
     @ElementCollection
@@ -37,13 +37,11 @@ public class Client {
     @OneToMany(mappedBy = "client")
     private List<Order> orders = new ArrayList<>();
 
-    public Client(Long id, String name, String cpfOrCnpj, ClientTypeEnum type, List<Address> addresses, Set<String> cellphone) {
+    public Client(Long id, String name, String cpfOrCnpj, ClientTypeEnum type) {
         this.id = id;
         this.name = name;
         this.cpfOrCnpj = cpfOrCnpj;
         this.type = type.getId();
-        this.addresses = addresses;
-        this.cellphone = cellphone;
     }
 
     public ClientTypeEnum getType() {
@@ -52,5 +50,13 @@ public class Client {
 
     public void setType(ClientTypeEnum type) {
         this.type = type.getId();
+    }
+
+    public void addAddress(Address address) {
+        addresses.add(address);
+    }
+
+    public void removeAddress(Address address) {
+        addresses.remove(address);
     }
 }

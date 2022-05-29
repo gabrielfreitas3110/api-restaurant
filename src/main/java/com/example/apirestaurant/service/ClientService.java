@@ -1,6 +1,8 @@
 package com.example.apirestaurant.service;
 
+import com.example.apirestaurant.model.Address;
 import com.example.apirestaurant.model.Client;
+import com.example.apirestaurant.model.dto.request.AddressRequestDto;
 import com.example.apirestaurant.model.dto.request.ClientRequestDto;
 import com.example.apirestaurant.model.dto.request.ClientUpdateRequestDto;
 import com.example.apirestaurant.model.dto.response.ClientResponseDto;
@@ -22,6 +24,9 @@ public class ClientService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private AddressService addressService;
 
     public ClientResponseDto create(ClientRequestDto clientRequestDto) {
         Client obj = findByCpfOrCnpj(clientRequestDto.getCpfOrCnpj());
@@ -58,4 +63,21 @@ public class ClientService {
         if(!clientDto.getName().isEmpty())
             obj.setName(clientDto.getName());
     }
+
+    public ClientResponseDto addAddress(Long id, AddressRequestDto address) {
+        Client obj = modelMapper.map(findById(id), Client.class);
+        Address addressObj = addressService.verifyAddress(obj, address);
+        addressService.create(addressObj);
+        obj.addAddress(addressObj);
+        clientRepository.save(obj);
+        return modelMapper.map(obj, ClientResponseDto.class);
+    }
+
+    protected void verifyDuplicateAddressClient(Client obj, AddressRequestDto address) {
+        for(Address ad : obj.getAddresses()) {
+            if(addressService.addressEquals(ad, address))
+                throw new DuplicatedObjectException("Client " + obj.getName() + ", already have this address");
+        }
+    }
+
 }

@@ -1,18 +1,19 @@
 package com.example.apirestaurant.model.dto.request;
 
-import com.example.apirestaurant.model.City;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
-public class StateRequestDto {
+public class AddressRequestDto {
 
-    private String name;
+    private String street;
+    private Integer number;
+    private String cep;
+    private String cityName;
+    private String stateName;
 }

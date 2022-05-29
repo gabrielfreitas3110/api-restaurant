@@ -1,5 +1,6 @@
 package com.example.apirestaurant.controller;
 
+import com.example.apirestaurant.model.dto.request.AddressRequestDto;
 import com.example.apirestaurant.model.dto.request.ClientRequestDto;
 import com.example.apirestaurant.model.dto.request.ClientUpdateRequestDto;
 import com.example.apirestaurant.model.dto.response.ClientResponseDto;
@@ -35,5 +36,10 @@ public class ClientController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<ClientResponseDto> update(@PathVariable Long id, @RequestBody ClientUpdateRequestDto clientUpdateRequestDto) {
         return ResponseEntity.ok().body(clientService.update(id, clientUpdateRequestDto));
+    }
+
+    @PatchMapping(value = "/{id}")
+    public ResponseEntity<ClientResponseDto> updateAddress(@PathVariable Long id, @RequestBody AddressRequestDto addressRequestDto) {
+        return ResponseEntity.ok().body(clientService.addAddress(id, addressRequestDto));
     }
 }
