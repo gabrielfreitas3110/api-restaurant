@@ -34,7 +34,7 @@ public class CategoryService {
         return categoryRepository.save(c);
     }
 
-    public List<Category> findAll() {
+    public List<Category> getAll() {
         return categoryRepository.findAll();
     }
 
@@ -58,12 +58,12 @@ public class CategoryService {
         categoryRepository.delete(obj);
     }
 
-    public Category findByName(String name) {
+    public Category getByName(String name) {
         return categoryRepository.findByName(name);
     }
 
     private void verifyDuplicate(String name) {
-        Category obj = findByName(name);
+        Category obj = getByName(name);
         if(obj != null)
             throw new DuplicatedObjectException("Category with name '"+ name + "' already exist! Id: " + obj.getId());
     }

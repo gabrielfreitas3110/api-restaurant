@@ -33,28 +33,28 @@ public class ProductService {
         return productRepository.save(p);
     }
 
-    public List<Product> findAll() {
+    public List<Product> getAll() {
         return productRepository.findAll();
     }
 
-    public Product findById(Long id) {
+    public Product getById(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Product not found! Id: "+id));
     }
 
     public Product update(Long id, ProductRequestDto ProductDto) {
-        Product obj = findById(id);
+        Product obj = getById(id);
         verifyDuplicate(ProductDto.getName());
         obj.setName(ProductDto.getName());
         return productRepository.save(obj);
     }
 
     public void delete(Long id) {
-        Product obj = findById(id);
+        Product obj = getById(id);
         productRepository.delete(obj);
     }
 
-    public Product findByName(String name) {
+    public Product getByName(String name) {
         return productRepository.findByName(name);
     }
 
@@ -68,7 +68,7 @@ public class ProductService {
         List<Category> categoryList = new ArrayList<>();
         if(categories != null) {
             categoryList = categories.stream().map(c -> {
-                Category ca = categoryService.findByName(c.getName());
+                Category ca = categoryService.getByName(c.getName());
                 return ca != null ? ca : c;
             }).collect(Collectors.toList());
         }

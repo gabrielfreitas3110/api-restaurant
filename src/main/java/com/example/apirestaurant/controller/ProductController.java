@@ -29,7 +29,7 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<ProductWithoutCategoryDto>> findAll() {
-        return ResponseEntity.ok().body(ProductService.findAll().stream()
+        return ResponseEntity.ok().body(ProductService.getAll().stream()
                 .map(c -> modelMapper.map(c, ProductWithoutCategoryDto.class))
                 .collect(Collectors.toList()));
     }
@@ -37,7 +37,7 @@ public class ProductController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<ProductResponseDto> findById(@PathVariable Long id) {
         return ResponseEntity.ok().body(modelMapper
-                .map(ProductService.findById(id), ProductResponseDto.class));
+                .map(ProductService.getById(id), ProductResponseDto.class));
     }
 
     @PutMapping(value = "/{id}")

@@ -30,7 +30,7 @@ public class ClientController {
 
     @GetMapping
     public ResponseEntity<List<ClientResponseDto>> findAll() {
-        return ResponseEntity.ok().body(clientService.findAll());
+        return ResponseEntity.ok().body(clientService.getAll());
     }
 
     @PutMapping(value = "/{id}")

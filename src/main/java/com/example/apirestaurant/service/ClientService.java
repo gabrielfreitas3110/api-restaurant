@@ -29,7 +29,7 @@ public class ClientService {
     private AddressService addressService;
 
     public ClientResponseDto create(ClientRequestDto clientRequestDto) {
-        Client obj = findByCpfOrCnpj(clientRequestDto.getCpfOrCnpj());
+        Client obj = getByCpfOrCnpj(clientRequestDto.getCpfOrCnpj());
         if(obj != null)
             throw new DuplicatedObjectException("Client already exist! Id: " + obj.getId());
         return modelMapper.map(clientRepository
@@ -37,7 +37,7 @@ public class ClientService {
                 ClientResponseDto.class);
     }
 
-    private Client findByCpfOrCnpj(String cpfOrCnpj) {
+    private Client getByCpfOrCnpj(String cpfOrCnpj) {
         return clientRepository.findByCpfOrCnpj(cpfOrCnpj);
     }
 
@@ -47,7 +47,7 @@ public class ClientService {
                 ClientResponseDto.class);
     }
 
-    public List<ClientResponseDto> findAll() {
+    public List<ClientResponseDto> getAll() {
         return clientRepository.findAll().stream()
                 .map(client -> modelMapper.map(client, ClientResponseDto.class))
                 .collect(Collectors.toList());

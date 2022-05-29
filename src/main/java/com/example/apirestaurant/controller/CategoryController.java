@@ -30,7 +30,7 @@ public class CategoryController {
 
     @GetMapping
     public ResponseEntity<List<CategoryWithoutProductDto>> findAll() {
-        return ResponseEntity.ok().body(categoryService.findAll().stream()
+        return ResponseEntity.ok().body(categoryService.getAll().stream()
                 .map(c -> modelMapper.map(c, CategoryWithoutProductDto.class))
                 .collect(Collectors.toList()));
     }
