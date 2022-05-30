@@ -1,6 +1,7 @@
 package com.example.apirestaurant.model;
 
 import com.example.apirestaurant.model.enums.PaymentStatusEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,6 +21,7 @@ public abstract class Payment {
 
     private Integer paymentStatus;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "order_id")
     @MapsId
@@ -31,7 +33,7 @@ public abstract class Payment {
         this.order = order;
     }
 
-    public PaymentStatusEnum setPaymentStatus() {
+    public PaymentStatusEnum getPaymentStatus() {
         return PaymentStatusEnum.toEnum(paymentStatus);
     }
 

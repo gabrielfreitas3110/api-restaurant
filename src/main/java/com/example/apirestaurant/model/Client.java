@@ -1,6 +1,7 @@
 package com.example.apirestaurant.model;
 
 import com.example.apirestaurant.model.enums.ClientTypeEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -34,6 +35,7 @@ public class Client {
     @CollectionTable(name = "tb_cellphone")
     private Set<String> cellphone = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "client")
     private List<Order> orders = new ArrayList<>();
 

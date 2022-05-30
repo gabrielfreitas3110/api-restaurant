@@ -1,5 +1,6 @@
 package com.example.apirestaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ public class Order {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private Date Instant;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "order")

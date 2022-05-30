@@ -1,5 +1,6 @@
 package com.example.apirestaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,6 +27,7 @@ public class Product {
 
     private Double price;
 
+    @JsonIgnore
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
             name = "tb_product_category",
@@ -35,8 +37,10 @@ public class Product {
     private List<Category> categories;
 
     @OneToMany(mappedBy = "id.product")
+    @JsonIgnore
     private List<OrderItem> orderItems;
 
+    @JsonIgnore
     public List<Order> getOrders() {
         List<Order> orders = new ArrayList<>();
         for(OrderItem orderItem : orderItems) {

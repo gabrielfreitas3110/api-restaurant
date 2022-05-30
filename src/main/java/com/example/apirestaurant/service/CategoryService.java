@@ -72,7 +72,7 @@ public class CategoryService {
         List<Product> productList = new ArrayList<>();
         if(products != null) {
             productList = products.stream().map(p -> {
-                Product po = productService.findByName(p.getName());
+                Product po = productService.getByName(p.getName());
                 return po != null ? po : p;
             }).collect(Collectors.toList());
         }

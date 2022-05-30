@@ -1,5 +1,6 @@
 package com.example.apirestaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +18,7 @@ import javax.persistence.Table;
 @Table(name = "tb_order_item")
 public class OrderItem {
 
+    @JsonIgnore
     @EmbeddedId
     private OrderIemPk id;
 
@@ -32,6 +34,7 @@ public class OrderItem {
         this.price = price;
     }
 
+    @JsonIgnore
     public Order getOrder() {
         return id.getOrder();
     }
