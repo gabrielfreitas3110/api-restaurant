@@ -41,7 +41,7 @@ public class ClientService {
         return clientRepository.findByCpfOrCnpj(cpfOrCnpj);
     }
 
-    public ClientResponseDto findById(Long id) {
+    public ClientResponseDto getById(Long id) {
         return modelMapper.map(clientRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Client not found! Id: " + id)),
                 ClientResponseDto.class);
@@ -54,7 +54,7 @@ public class ClientService {
     }
 
     public ClientResponseDto update(Long id, ClientUpdateRequestDto clientUpdateRequestDto) {
-        Client obj = modelMapper.map(findById(id), Client.class);
+        Client obj = modelMapper.map(getById(id), Client.class);
         updateData(obj, clientUpdateRequestDto);
         return modelMapper.map(clientRepository.save(obj), ClientResponseDto.class);
     }
@@ -65,7 +65,7 @@ public class ClientService {
     }
 
     public ClientResponseDto addAddress(Long id, AddressRequestDto address) {
-        Client obj = modelMapper.map(findById(id), Client.class);
+        Client obj = modelMapper.map(getById(id), Client.class);
         Address addressObj = addressService.verifyAddress(obj, address);
         addressService.create(addressObj);
         obj.addAddress(addressObj);
@@ -81,7 +81,7 @@ public class ClientService {
     }
 
     public ClientResponseDto removeAddress(Long id, Long address_id) {
-        Client obj = modelMapper.map(findById(id), Client.class);
+        Client obj = modelMapper.map(getById(id), Client.class);
         Address addressObj = addressService.getById(address_id);
         obj.removeAddress(addressObj);
         addressService.delete(address_id);

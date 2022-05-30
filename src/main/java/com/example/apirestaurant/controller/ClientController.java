@@ -8,7 +8,9 @@ import com.example.apirestaurant.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -20,12 +22,14 @@ public class ClientController {
 
     @PostMapping
     public ResponseEntity<ClientResponseDto> save(@RequestBody ClientRequestDto clientRequestDto) {
-        return ResponseEntity.ok().body(clientService.create(clientRequestDto));
+        ClientResponseDto obj = clientService.create(clientRequestDto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+        return ResponseEntity.created(uri).body(obj);
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<ClientResponseDto> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(clientService.findById(id));
+        return ResponseEntity.ok().body(clientService.getById(id));
     }
 
     @GetMapping

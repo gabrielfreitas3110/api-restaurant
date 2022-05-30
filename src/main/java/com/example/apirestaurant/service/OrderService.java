@@ -18,7 +18,7 @@ public class OrderService {
 
     public OrderResponseDto getById(Long id) {
         return modelMapper.map(orderRepository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundException("Order not found! Id: "+id)), OrderResponseDto.class);
+                .orElseThrow(() -> new ObjectNotFoundException("Order not found! Id: " + id)), OrderResponseDto.class);
     }
 
 }

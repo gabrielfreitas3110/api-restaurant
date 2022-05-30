@@ -1,8 +1,9 @@
 package com.example.apirestaurant.service;
 
 import com.example.apirestaurant.model.Category;
-import com.example.apirestaurant.model.Product;
+import com.example.apirestaurant.model.dto.CategoryWithoutProductDto;
 import com.example.apirestaurant.model.dto.request.CategoryRequestDto;
+import com.example.apirestaurant.model.dto.response.CategoryResponseDto;
 import com.example.apirestaurant.repository.CategoryRepository;
 import com.example.apirestaurant.service.exception.ConstraintViolationException;
 import com.example.apirestaurant.service.exception.DuplicatedObjectException;
@@ -27,31 +28,33 @@ public class CategoryService {
     @Autowired
     private ProductService productService;
 
-    public Category create(CategoryRequestDto categoryRequestDto) {
+    public CategoryResponseDto create(CategoryRequestDto categoryRequestDto) {
         Category c = modelMapper.map(categoryRequestDto, Category.class);
         verifyDuplicate(categoryRequestDto.getName());
-        c.setProducts(verifyProducts(c.getProducts()));
-        return categoryRepository.save(c);
+        c.setProducts(productService.verifyProducts(c.getProducts()));
+        return modelMapper.map(categoryRepository.save(c), CategoryResponseDto.class);
     }
 
-    public List<Category> getAll() {
-        return categoryRepository.findAll();
+    public List<CategoryWithoutProductDto> getAll() {
+        return categoryRepository.findAll().stream()
+                .map(c -> modelMapper.map(c, CategoryWithoutProductDto.class))
+                .collect(Collectors.toList());
     }
 
-    public Category getById(Long id) {
-        return categoryRepository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundException("Category not found! Id: " + id));
+    public CategoryResponseDto getById(Long id) {
+        return modelMapper.map(categoryRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Category not found! Id: " + id)), CategoryResponseDto.class);
     }
 
-    public Category update(Long id, CategoryRequestDto categoryDto) {
-        Category obj = getById(id);
+    public CategoryResponseDto update(Long id, CategoryRequestDto categoryDto) {
+        Category obj = modelMapper.map(getById(id), Category.class);
         verifyDuplicate(categoryDto.getName());
         obj.setName(categoryDto.getName());
-        return categoryRepository.save(obj);
+        return modelMapper.map(categoryRepository.save(obj), CategoryResponseDto.class);
     }
 
     public void delete(Long id) {
-        Category obj = getById(id);
+        Category obj = modelMapper.map(getById(id), Category.class);
         if(!obj.getProducts().isEmpty())
             throw new ConstraintViolationException("Can't delete category " + obj.getName()
                     + ", because it have linked products");
@@ -68,14 +71,14 @@ public class CategoryService {
             throw new DuplicatedObjectException("Category with name '"+ name + "' already exist! Id: " + obj.getId());
     }
 
-    private List<Product> verifyProducts(List<Product> products) {
-        List<Product> productList = new ArrayList<>();
-        if(products != null) {
-            productList = products.stream().map(p -> {
-                Product po = productService.getByName(p.getName());
-                return po != null ? po : p;
+    protected List<Category> verifyCategories(List<Category> categories) {
+        List<Category> categoryList = new ArrayList<>();
+        if(categories != null) {
+            categoryList = categories.stream().map(c -> {
+                Category ca = getByName(c.getName());
+                return ca != null ? ca : c;
             }).collect(Collectors.toList());
         }
-        return productList;
+        return categoryList;
     }
 }

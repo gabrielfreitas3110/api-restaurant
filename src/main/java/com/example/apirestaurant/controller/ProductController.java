@@ -1,54 +1,49 @@
 package com.example.apirestaurant.controller;
 
+import com.example.apirestaurant.model.dto.ProductWithoutCategoryDto;
 import com.example.apirestaurant.model.dto.request.ProductRequestDto;
 import com.example.apirestaurant.model.dto.response.ProductResponseDto;
-import com.example.apirestaurant.model.dto.ProductWithoutCategoryDto;
 import com.example.apirestaurant.service.ProductService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/products")
 public class ProductController {
 
     @Autowired
-    private ProductService ProductService;
-
-    @Autowired
-    private ModelMapper modelMapper;
+    private ProductService productService;
 
     @PostMapping
     public ResponseEntity<ProductResponseDto> save(@RequestBody ProductRequestDto productRequestDto) {
-        return ResponseEntity.ok().body(modelMapper.map(ProductService.create(productRequestDto), ProductResponseDto.class));
+        ProductResponseDto obj = productService.create(productRequestDto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+        return ResponseEntity.created(uri).body(obj);
     }
 
     @GetMapping
     public ResponseEntity<List<ProductWithoutCategoryDto>> findAll() {
-        return ResponseEntity.ok().body(ProductService.getAll().stream()
-                .map(c -> modelMapper.map(c, ProductWithoutCategoryDto.class))
-                .collect(Collectors.toList()));
+        return ResponseEntity.ok().body(productService.getAll());
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<ProductResponseDto> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(modelMapper
-                .map(ProductService.getById(id), ProductResponseDto.class));
+        return ResponseEntity.ok().body(productService.getById(id));
     }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<ProductResponseDto> update(@PathVariable Long id, @RequestBody ProductRequestDto ProductDto) {
-        return ResponseEntity.ok().body(modelMapper
-                .map(ProductService.update(id, ProductDto), ProductResponseDto.class));
+        return ResponseEntity.ok().body(productService.update(id, ProductDto));
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<ProductResponseDto> delete(@PathVariable Long id) {
-        ProductService.delete(id);
+        productService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }
