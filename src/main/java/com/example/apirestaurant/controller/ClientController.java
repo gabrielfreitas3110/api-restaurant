@@ -6,12 +6,12 @@ import com.example.apirestaurant.model.dto.request.ClientUpdateRequestDto;
 import com.example.apirestaurant.model.dto.response.ClientResponseDto;
 import com.example.apirestaurant.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/clients")
@@ -33,8 +33,12 @@ public class ClientController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ClientResponseDto>> findAll() {
-        return ResponseEntity.ok().body(clientService.getAll());
+    public ResponseEntity<Page<ClientResponseDto>> findAll(
+        @RequestParam(value = "page", defaultValue = "0") Integer page,
+        @RequestParam(value = "size", defaultValue = "10") Integer size,
+        @RequestParam(value = "direction", defaultValue = "ASC") String direction,
+        @RequestParam(value = "orderBy", defaultValue = "name") String orderBy) {
+        return ResponseEntity.ok().body(clientService.getAllPaged(page, size, direction, orderBy));
     }
 
     @PutMapping(value = "/{id}")

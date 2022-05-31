@@ -9,6 +9,9 @@ import com.example.apirestaurant.service.exception.DuplicatedObjectException;
 import com.example.apirestaurant.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,10 +37,10 @@ public class ProductService {
         return modelMapper.map(productRepository.save(p), ProductResponseDto.class);
     }
 
-    public List<ProductWithoutCategoryDto> getAll() {
-        return productRepository.findAll().stream()
-                .map(p -> modelMapper.map(p, ProductWithoutCategoryDto.class))
-                .collect(Collectors.toList());
+    public Page<ProductWithoutCategoryDto> getAllPaged(Integer page, Integer size, String direction, String orderBy) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.valueOf(direction), orderBy);
+        return productRepository.findAll(pageRequest)
+                .map(p -> modelMapper.map(p, ProductWithoutCategoryDto.class));
     }
 
     public ProductResponseDto getById(Long id) {

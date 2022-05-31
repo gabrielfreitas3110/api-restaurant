@@ -11,10 +11,10 @@ import com.example.apirestaurant.service.exception.DuplicatedObjectException;
 import com.example.apirestaurant.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ClientService {
@@ -47,10 +47,10 @@ public class ClientService {
                 ClientResponseDto.class);
     }
 
-    public List<ClientResponseDto> getAll() {
-        return clientRepository.findAll().stream()
-                .map(client -> modelMapper.map(client, ClientResponseDto.class))
-                .collect(Collectors.toList());
+    public Page<ClientResponseDto> getAllPaged(Integer page, Integer size, String direction, String orderBy) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.valueOf(direction), orderBy);
+        return clientRepository.findAll(pageRequest)
+                .map(client -> modelMapper.map(client, ClientResponseDto.class));
     }
 
     public ClientResponseDto update(Long id, ClientUpdateRequestDto clientUpdateRequestDto) {

@@ -5,12 +5,12 @@ import com.example.apirestaurant.model.dto.request.CategoryRequestDto;
 import com.example.apirestaurant.model.dto.response.CategoryResponseDto;
 import com.example.apirestaurant.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/categories")
@@ -27,8 +27,12 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoryWithoutProductDto>> findAll() {
-        return ResponseEntity.ok().body(categoryService.getAll());
+    public ResponseEntity<Page<CategoryWithoutProductDto>> findAll(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "10") Integer size,
+            @RequestParam(value = "direction", defaultValue = "ASC") String direction,
+            @RequestParam(value = "orderBy", defaultValue = "name") String orderBy) {
+        return ResponseEntity.ok().body(categoryService.getAllPaged(page, size, direction, orderBy));
     }
 
     @GetMapping(value = "/{id}")
