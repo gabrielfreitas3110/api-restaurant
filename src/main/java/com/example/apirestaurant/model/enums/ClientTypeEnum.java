@@ -1,6 +1,6 @@
 package com.example.apirestaurant.model.enums;
 
-import com.example.apirestaurant.model.exception.BadRequestException;
+import com.example.apirestaurant.service.exception.BadRequestException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

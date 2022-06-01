@@ -6,7 +6,7 @@ import com.example.apirestaurant.model.Client;
 import com.example.apirestaurant.model.State;
 import com.example.apirestaurant.model.dto.request.AddressRequestDto;
 import com.example.apirestaurant.model.dto.request.StateRequestDto;
-import com.example.apirestaurant.model.exception.BadRequestException;
+import com.example.apirestaurant.service.exception.BadRequestException;
 import com.example.apirestaurant.repository.AddressRepository;
 import com.example.apirestaurant.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

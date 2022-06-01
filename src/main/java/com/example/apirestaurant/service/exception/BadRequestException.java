@@ -1,4 +1,4 @@
-package com.example.apirestaurant.model.exception;
+package com.example.apirestaurant.service.exception;
 
 public class BadRequestException extends RuntimeException {
 
