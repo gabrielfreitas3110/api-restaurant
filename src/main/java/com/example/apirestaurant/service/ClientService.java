@@ -40,9 +40,9 @@ public class ClientService {
         Client obj = getByCpfOrCnpj(clientRequestDto.getCpfOrCnpj());
         if(obj != null)
             throw new DuplicatedObjectException("Client already exist! Id: " + obj.getId());
-        return modelMapper.map(clientRepository
-                .save(modelMapper.map(clientRequestDto, Client.class)),
-                ClientResponseDto.class);
+        obj = modelMapper.map(clientRequestDto, Client.class);
+        obj.setType(clientRequestDto.getType());
+        return modelMapper.map(clientRepository.save(obj), ClientResponseDto.class);
     }
 
     private Client getByCpfOrCnpj(String cpfOrCnpj) {

@@ -1,6 +1,7 @@
 package com.example.apirestaurant.model.dto.request;
 
 import com.example.apirestaurant.model.enums.ClientTypeEnum;
+import com.example.apirestaurant.service.validation.ClientInsert;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +15,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Builder
 @Data
+@ClientInsert
 public class ClientRequestDto {
 
     @NotBlank(message = "Required field")
@@ -24,5 +26,12 @@ public class ClientRequestDto {
     @Email(message = "The Email Address is Not a Well Formed E-mail address")
     private String email;
     private String cpfOrCnpj;
-    private ClientTypeEnum type;
+    private Integer type;
+
+    public ClientTypeEnum getType() {
+        return ClientTypeEnum.toEnum(type);
+    }
+    public void setType(ClientTypeEnum type) {
+        this.type = type.getId();
+    }
 }
