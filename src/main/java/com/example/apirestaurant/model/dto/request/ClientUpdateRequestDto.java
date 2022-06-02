@@ -17,6 +17,6 @@ public class ClientUpdateRequestDto {
     @Size(min = 5, max = 50, message = "The size must be between 5 and 50 characters.")
     private String name;
     @Size(min = 5, max = 50, message = "The size must be between 5 and 50 characters.")
-    @Email
+    @Email(message = "The Email Address is Not a Well Formed E-mail address")
     private String email;
 }
