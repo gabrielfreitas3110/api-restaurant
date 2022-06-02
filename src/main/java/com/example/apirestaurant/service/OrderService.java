@@ -7,6 +7,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class OrderService {
 
@@ -21,4 +24,9 @@ public class OrderService {
                 .orElseThrow(() -> new ObjectNotFoundException("Order not found! Id: " + id)), OrderResponseDto.class);
     }
 
+    protected List<OrderResponseDto> getByClientId(Long clientId) {
+        return orderRepository.findByClientId(clientId).stream()
+                .map(order -> modelMapper.map(order, OrderResponseDto.class))
+                .collect(Collectors.toList());
+    }
 }

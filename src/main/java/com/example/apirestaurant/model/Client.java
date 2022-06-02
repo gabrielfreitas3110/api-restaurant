@@ -4,6 +4,8 @@ import com.example.apirestaurant.model.enums.ClientTypeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,6 +17,8 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "tb_client")
+@SQLDelete(sql = "UPDATE tb_client SET deleted = true WHERE id=?")
+@Where(clause = "deleted = false")
 public class Client {
 
     @Id
@@ -28,7 +32,7 @@ public class Client {
 
     private Integer type;
 
-    @OneToMany(mappedBy = "client", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "client")
     private List<Address> addresses = new ArrayList<>();
 
     @ElementCollection
@@ -56,4 +60,6 @@ public class Client {
     public void removeAddress(Address address) {
         addresses.remove(address);
     }
+
+    public boolean deleted = Boolean.FALSE;
 }

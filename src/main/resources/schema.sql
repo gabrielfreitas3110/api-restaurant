@@ -49,6 +49,7 @@ CREATE TABLE tb_client (
     email VARCHAR(255),
     cpf_or_cnpj VARCHAR(255) UNIQUE,
     type INTEGER,
+    deleted BOOLEAN,
     PRIMARY KEY (id)
 );
 

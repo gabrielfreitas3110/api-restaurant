@@ -6,7 +6,10 @@ import com.example.apirestaurant.model.dto.request.AddressRequestDto;
 import com.example.apirestaurant.model.dto.request.ClientRequestDto;
 import com.example.apirestaurant.model.dto.request.ClientUpdateRequestDto;
 import com.example.apirestaurant.model.dto.response.ClientResponseDto;
+import com.example.apirestaurant.model.dto.response.OrderResponseDto;
+import com.example.apirestaurant.model.enums.PaymentStatusEnum;
 import com.example.apirestaurant.repository.ClientRepository;
+import com.example.apirestaurant.service.exception.BadRequestException;
 import com.example.apirestaurant.service.exception.DuplicatedObjectException;
 import com.example.apirestaurant.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -15,6 +18,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ClientService {
@@ -27,6 +32,9 @@ public class ClientService {
 
     @Autowired
     private AddressService addressService;
+
+    @Autowired
+    private OrderService orderService;
 
     public ClientResponseDto create(ClientRequestDto clientRequestDto) {
         Client obj = getByCpfOrCnpj(clientRequestDto.getCpfOrCnpj());
@@ -92,6 +100,11 @@ public class ClientService {
 
     public void delete(Long id) {
         Client obj = modelMapper.map(getById(id), Client.class);
-        clientRepository.delete(obj);
+        List<OrderResponseDto> orders = orderService.getByClientId(id);
+        for(OrderResponseDto order : orders) {
+            if(!order.getPayment().getPaymentStatus().getId().equals(PaymentStatusEnum.PAID.getId()))
+                throw new BadRequestException("Can't delete client with unpaid order!");
+        }
+        clientRepository.deleteById(id);
     }
 }
