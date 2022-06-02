@@ -18,6 +18,8 @@ public class ClientRequestDto {
     @NotBlank(message = "Required field")
     @Size(min = 5, max = 50, message = "The size must be between 5 and 50 characters.")
     private String name;
+    @NotBlank(message = "Required field")
+    @Size(min = 5, max = 50, message = "The size must be between 5 and 50 characters.")
     private String email;
     private String cpfOrCnpj;
     private ClientTypeEnum type;
