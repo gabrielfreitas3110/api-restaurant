@@ -62,6 +62,8 @@ public class ClientService {
     private void updateData(Client obj, ClientUpdateRequestDto clientDto) {
         if(!clientDto.getName().isEmpty())
             obj.setName(clientDto.getName());
+        if(!clientDto.getEmail().isEmpty())
+            obj.setEmail(clientDto.getEmail());
     }
 
     public ClientResponseDto addAddress(Long id, AddressRequestDto address) {

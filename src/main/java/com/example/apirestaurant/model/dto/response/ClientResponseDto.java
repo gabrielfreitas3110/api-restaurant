@@ -18,6 +18,7 @@ public class ClientResponseDto {
 
     private Long id;
     private String name;
+    private String email;
     private String cpfOrCnpj;
     private ClientTypeEnum type;
     private List<Address> addresses;

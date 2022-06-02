@@ -39,12 +39,7 @@ public class Client {
     @OneToMany(mappedBy = "client")
     private List<Order> orders = new ArrayList<>();
 
-    public Client(Long id, String name, String cpfOrCnpj, ClientTypeEnum type) {
-        this.id = id;
-        this.name = name;
-        this.cpfOrCnpj = cpfOrCnpj;
-        this.type = type.getId();
-    }
+    private String email;
 
     public ClientTypeEnum getType() {
         return ClientTypeEnum.toEnum(type);
