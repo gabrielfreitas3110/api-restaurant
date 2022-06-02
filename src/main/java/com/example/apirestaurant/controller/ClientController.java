@@ -56,4 +56,10 @@ public class ClientController {
     public ResponseEntity<ClientResponseDto> removeAddress(@PathVariable Long id, @PathVariable Long address_id) {
         return ResponseEntity.ok().body(clientService.removeAddress(id, address_id));
     }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        clientService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

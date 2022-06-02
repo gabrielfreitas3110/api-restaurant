@@ -24,20 +24,20 @@ public class ResourceExceptionHandler {
 
 	@ExceptionHandler(DuplicatedObjectException.class)
 	public ResponseEntity<StandardError> duplicatedObjectException(DuplicatedObjectException e, HttpServletRequest request) {
-		StandardError error = new StandardError(HttpStatus.CONFLICT.value(), e.getMessage(), System.currentTimeMillis());
-		return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+		StandardError error = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 	}
 
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ResponseEntity<StandardError> constraintViolationException(ConstraintViolationException e, HttpServletRequest request) {
-		StandardError error = new StandardError(HttpStatus.CONFLICT.value(), e.getMessage(), System.currentTimeMillis());
-		return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+		StandardError error = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 	}
 
 	@ExceptionHandler(BadRequestException.class)
 	public ResponseEntity<StandardError> badRequestException(BadRequestException e, HttpServletRequest request) {
-		StandardError error = new StandardError(HttpStatus.CONFLICT.value(), e.getMessage(), System.currentTimeMillis());
-		return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+		StandardError error = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)

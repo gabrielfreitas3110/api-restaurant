@@ -90,4 +90,8 @@ public class ClientService {
         return modelMapper.map(clientRepository.save(obj), ClientResponseDto.class);
     }
 
+    public void delete(Long id) {
+        Client obj = modelMapper.map(getById(id), Client.class);
+        clientRepository.delete(obj);
+    }
 }
