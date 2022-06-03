@@ -25,13 +25,7 @@ public class ClientRequestDto {
     @Size(min = 5, max = 50, message = "The size must be between 5 and 50 characters.")
     @Email(message = "The Email Address is Not a Well Formed E-mail address")
     private String email;
-    private String cpfOrCnpj;
+    private String cpfCnpj;
     private Integer type;
 
-    public ClientTypeEnum getType() {
-        return ClientTypeEnum.toEnum(type);
-    }
-    public void setType(ClientTypeEnum type) {
-        this.type = type.getId();
-    }
 }

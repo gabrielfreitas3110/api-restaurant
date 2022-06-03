@@ -46,8 +46,8 @@ CREATE TABLE tb_city (
 CREATE TABLE tb_client (
     id BIGINT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255),
-    email VARCHAR(255),
-    cpf_or_cnpj VARCHAR(255) UNIQUE,
+    email VARCHAR(255) UNIQUE,
+    cpf_cnpj VARCHAR(255) UNIQUE,
     type INTEGER,
     deleted BOOLEAN,
     PRIMARY KEY (id)

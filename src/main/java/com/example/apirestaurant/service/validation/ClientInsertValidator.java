@@ -20,10 +20,10 @@ public class ClientInsertValidator implements ConstraintValidator<ClientInsert, 
     @Override
     public boolean isValid(ClientRequestDto obj, ConstraintValidatorContext context) {
         List<FieldMessage> errors = new ArrayList<>();
-        if(obj.getType().equals(ClientTypeEnum.NATURAL_PERSON.getId()) && !BR.isValidSsn(obj.getCpfOrCnpj()))
-            errors.add(new FieldMessage("cpfOrCnpj", "Invalid CPF!"));
-        if(obj.getType().equals(ClientTypeEnum.LEGAL_PERSON.getId()) && !BR.isValidTfn(obj.getCpfOrCnpj()))
-            errors.add(new FieldMessage("cpfOrCnpj", "Invalid CNPJ!"));
+        if(obj.getType().equals(ClientTypeEnum.NATURAL_PERSON.getId()) && !BR.isValidSsn(obj.getCpfCnpj()))
+            errors.add(new FieldMessage("cpfCnpj", "Invalid CPF!"));
+        if(obj.getType().equals(ClientTypeEnum.LEGAL_PERSON.getId()) && !BR.isValidTfn(obj.getCpfCnpj()))
+            errors.add(new FieldMessage("cpfCnpj", "Invalid CNPJ!"));
         for(FieldMessage e : errors) {
             context.disableDefaultConstraintViolation();;
             context.buildConstraintViolationWithTemplate(e.getMessage())

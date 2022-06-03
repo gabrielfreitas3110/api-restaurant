@@ -28,7 +28,7 @@ public class Client {
 
     private String name;
 
-    private String cpfOrCnpj;
+    private String cpfCnpj;
 
     private Integer type;
 
@@ -43,6 +43,7 @@ public class Client {
     @OneToMany(mappedBy = "client")
     private List<Order> orders = new ArrayList<>();
 
+    @Column(unique = true)
     private String email;
 
     public ClientTypeEnum getType() {

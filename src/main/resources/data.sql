@@ -8,7 +8,7 @@ INSERT INTO tb_product_category(product_id, category_id) VALUES (1, 2), (2,2), (
 INSERT INTO tb_state (name) VALUES ('Goias'), ('Minas Gerais');
 INSERT INTO tb_city (name, state_id) VALUES ('Itumbiara', 1), ('Goiania', 1), ('Uberlandia', 2);
 
-INSERT INTO tb_client(name, email, cpf_or_cnpj, type, deleted) VALUES
+INSERT INTO tb_client(name, email, cpf_cnpj, type, deleted) VALUES
 ('Gabriel','gabriel.freitas3110@gmail.com', '01234567899', 1, 0), ('Augusto','xqgabriel1@gmail..com', '60421100000113', 2, 0);
 
 INSERT INTO tb_address(street, number, cep, client_id, city_id) VALUES

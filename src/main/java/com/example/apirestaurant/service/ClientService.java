@@ -7,6 +7,7 @@ import com.example.apirestaurant.model.dto.request.ClientRequestDto;
 import com.example.apirestaurant.model.dto.request.ClientUpdateRequestDto;
 import com.example.apirestaurant.model.dto.response.ClientResponseDto;
 import com.example.apirestaurant.model.dto.response.OrderResponseDto;
+import com.example.apirestaurant.model.enums.ClientTypeEnum;
 import com.example.apirestaurant.model.enums.PaymentStatusEnum;
 import com.example.apirestaurant.repository.ClientRepository;
 import com.example.apirestaurant.service.exception.BadRequestException;
@@ -37,16 +38,16 @@ public class ClientService {
     private OrderService orderService;
 
     public ClientResponseDto create(ClientRequestDto clientRequestDto) {
-        Client obj = getByCpfOrCnpj(clientRequestDto.getCpfOrCnpj());
+        Client obj = getByCpfCnpj(clientRequestDto.getCpfCnpj());
         if(obj != null)
             throw new DuplicatedObjectException("Client already exist! Id: " + obj.getId());
         obj = modelMapper.map(clientRequestDto, Client.class);
-        obj.setType(clientRequestDto.getType());
+        obj.setType(ClientTypeEnum.toEnum(clientRequestDto.getType()));
         return modelMapper.map(clientRepository.save(obj), ClientResponseDto.class);
     }
 
-    private Client getByCpfOrCnpj(String cpfOrCnpj) {
-        return clientRepository.findByCpfOrCnpj(cpfOrCnpj);
+    private Client getByCpfCnpj(String cpfCnpj) {
+        return clientRepository.findByCpfCnpj(cpfCnpj);
     }
 
     public ClientResponseDto getById(Long id) {
