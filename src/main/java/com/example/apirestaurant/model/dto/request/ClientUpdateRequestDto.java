@@ -1,6 +1,6 @@
 package com.example.apirestaurant.model.dto.request;
 
-import com.example.apirestaurant.service.validation.ClientInsert;
+import com.example.apirestaurant.service.validation.ClientUpdate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Builder
 @Data
+@ClientUpdate
 public class ClientUpdateRequestDto {
 
     @Size(min = 5, max = 50, message = "The size must be between 5 and 50 characters.")
