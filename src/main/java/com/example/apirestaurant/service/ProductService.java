@@ -1,5 +1,6 @@
 package com.example.apirestaurant.service;
 
+import com.example.apirestaurant.model.Category;
 import com.example.apirestaurant.model.Product;
 import com.example.apirestaurant.model.dto.ProductWithoutCategoryDto;
 import com.example.apirestaurant.model.dto.request.ProductRequestDto;
@@ -79,5 +80,13 @@ public class ProductService {
             }).collect(Collectors.toList());
         }
         return productList;
+    }
+
+    public Page<ProductWithoutCategoryDto> search(String name, List<String> stringCategoryIds, Integer page, Integer size, String direction, String orderBy) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.valueOf(direction), orderBy);
+        List<Long> categoryIds = stringCategoryIds.stream().map(c -> Long.parseLong(c)).collect(Collectors.toList());
+        name = name.replace(" ","");
+        List<Category> categories = categoryService.getAllById(categoryIds);
+        return productRepository.findDistinctByNameContainingIgnoreCaseAndCategoriesIn(name, categories, pageRequest).map(p -> modelMapper.map(p, ProductWithoutCategoryDto.class));
     }
 }

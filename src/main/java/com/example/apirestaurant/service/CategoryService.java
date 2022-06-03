@@ -84,4 +84,8 @@ public class CategoryService {
         }
         return categoryList;
     }
+
+    public List<Category> getAllById(List<Long> ids) {
+        return categoryRepository.findAllById(ids);
+    }
 }

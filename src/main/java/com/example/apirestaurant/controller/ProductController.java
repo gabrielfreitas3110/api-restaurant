@@ -12,6 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/products")
@@ -50,5 +51,16 @@ public class ProductController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         productService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/search")
+    public ResponseEntity<Page<ProductWithoutCategoryDto>> search(
+            @RequestParam(value = "name", defaultValue = "0") String name,
+            @RequestParam(value = "categoryIds", defaultValue = "0") String categoryIds,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "10") Integer size,
+            @RequestParam(value = "direction", defaultValue = "ASC") String direction,
+            @RequestParam(value = "orderBy", defaultValue = "name") String orderBy) {
+        return ResponseEntity.ok().body(productService.search(name, List.of(categoryIds.split(",")), page, size, direction, orderBy));
     }
 }

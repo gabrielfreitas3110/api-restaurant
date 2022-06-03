@@ -27,3 +27,20 @@ INSERT INTO tb_slip_payment(due_date, pay_date, order_id) VALUES ('2022-05-28 16
 
 INSERT INTO tb_order_item(discount, quantity, price, order_id, product_id) VALUES
 (0.0, 1, 4.99, 1, 1), (0.0, 1, 3.00, 1, 3);
+
+INSERT INTO tb_category (name) VALUES
+('Computing'), ('Office'), ('Household Linen'), ('Eletronics'), ('Gardening'), ('Decoration'), ('Perfumery') ;
+
+INSERT INTO tb_product (name, price) VALUES
+('Computer', 2000.00),  ('Printer', 800.00),  ('Mouse', 80.00), ('Office Desk', 300.00),
+('Towel', 50.00),  ('Bedspread', 200.00),  ('TV True Color', 1200.00), ('Brushcutter', 800.00),
+('Bedside Lamp', 100.00),  ('Pendant', 180.00),  ('Shampoo', 90.00);
+
+INSERT INTO tb_product_category(product_id, category_id) VALUES
+(5, 3), (6, 3), (7, 3),
+(6, 4), (8, 4),
+(9, 5), (10, 5),
+(5, 6), (6, 6), (7, 6), (11, 6),
+(12, 7),
+(13, 8), (14, 8),
+(15, 9);
