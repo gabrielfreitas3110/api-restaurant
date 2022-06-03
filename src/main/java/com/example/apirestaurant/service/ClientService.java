@@ -38,10 +38,7 @@ public class ClientService {
     private OrderService orderService;
 
     public ClientResponseDto create(ClientRequestDto clientRequestDto) {
-        Client obj = getByCpfCnpj(clientRequestDto.getCpfCnpj());
-        if(obj != null)
-            throw new DuplicatedObjectException("Client already exist! Id: " + obj.getId());
-        obj = modelMapper.map(clientRequestDto, Client.class);
+        Client obj = modelMapper.map(clientRequestDto, Client.class);
         obj.setType(ClientTypeEnum.toEnum(clientRequestDto.getType()));
         return modelMapper.map(clientRepository.save(obj), ClientResponseDto.class);
     }
