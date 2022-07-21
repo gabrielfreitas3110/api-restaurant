@@ -27,17 +27,7 @@ public abstract class Payment {
     @MapsId
     private Order order;
 
-    public Payment(Long id, PaymentStatusEnum status, Order order) {
-        this.id = id;
-        this.paymentStatus = status.getId();
-        this.order = order;
-    }
-
     public PaymentStatusEnum getPaymentStatus() {
         return PaymentStatusEnum.toEnum(paymentStatus);
-    }
-
-    public void setPaymentStatus(PaymentStatusEnum status) {
-        this.paymentStatus = status.getId();
     }
 }

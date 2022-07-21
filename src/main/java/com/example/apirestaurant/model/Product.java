@@ -36,7 +36,7 @@ public class Product {
     )
     private List<Category> categories;
 
-    @OneToMany(mappedBy = "id.product")
+    @OneToMany(mappedBy = "product")
     @JsonIgnore
     private List<OrderItem> orderItems;
 

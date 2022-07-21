@@ -6,8 +6,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Data
@@ -15,31 +18,26 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Builder
 @Entity
+@IdClass(OrderIemPk.class)
 @Table(name = "tb_order_item")
 public class OrderItem {
 
-    @JsonIgnore
-    @EmbeddedId
-    private OrderIemPk id;
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     private Double discount;
     private Integer quantity;
     private Double price;
 
-    public OrderItem(Order order, Product product, Double discount, Integer quantity, Double price) {
-        this.id.setOrder(order);
-        this.id.setProduct(product);
-        this.discount = discount;
-        this.quantity = quantity;
-        this.price = price;
-    }
-
     @JsonIgnore
     public Order getOrder() {
-        return id.getOrder();
-    }
-
-    public Product getProduct() {
-        return id.getProduct();
+        return order;
     }
 }
