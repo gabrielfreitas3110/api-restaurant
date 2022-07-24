@@ -40,4 +40,8 @@ public class OrderItem {
     public Order getOrder() {
         return order;
     }
+
+    public Double getSubTotal() {
+        return (price - discount) * quantity;
+    }
 }

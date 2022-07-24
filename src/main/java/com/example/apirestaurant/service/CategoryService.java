@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,7 @@ public class CategoryService {
     @Autowired
     private ProductService productService;
 
+    @Transactional
     public CategoryResponseDto create(CategoryRequestDto categoryRequestDto) {
         Category c = modelMapper.map(categoryRequestDto, Category.class);
         verifyDuplicate(categoryRequestDto.getName());
