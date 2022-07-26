@@ -31,8 +31,7 @@ public class Order {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-    private Date Instant;
+    private Date moment;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "order")
     private Payment payment;

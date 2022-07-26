@@ -89,7 +89,7 @@ CREATE TABLE tb_payment(
 
 CREATE TABLE tb_order (
     id BIGINT NOT NULL AUTO_INCREMENT,
-    instant TIMESTAMP,
+    moment TIMESTAMP,
     client_id BIGINT,
     delivery_address_id BIGINT,
     PRIMARY KEY (id)
