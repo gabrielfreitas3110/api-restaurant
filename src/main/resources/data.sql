@@ -17,7 +17,7 @@ INSERT INTO tb_address(street, number, cep, client_id, city_id) VALUES
 INSERT INTO tb_cellphone (cellphone, client_id) VALUES
 ('64996662498', 1), ('6434314231', 1), ('64996662498', 2), ('6434314231', 2);
 
-INSERT INTO tb_order(moment, client_id, delivery_address_id) VALUES
+INSERT INTO tb_order(instant, client_id, delivery_address_id) VALUES
 ('2022-05-28 16:30:00.0', 1, 1), ('2022-05-28 16:35:00.0', 1, 2);
 
 INSERT INTO tb_payment(payment_status, order_id) VALUES

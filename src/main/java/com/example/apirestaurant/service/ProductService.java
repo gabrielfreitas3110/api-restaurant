@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     @Autowired
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -90,5 +90,10 @@ public class ProductService {
         name = name.replace(" ","");
         List<Category> categories = categoryService.getAllById(categoryIds);
         return productRepository.findDistinctByNameContainingIgnoreCaseAndCategoriesIn(name, categories, pageRequest).map(p -> modelMapper.map(p, ProductWithoutCategoryDto.class));
+    }
+
+    public Product getProductById(Long id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Product not found! Id: " + id));
     }
 }
