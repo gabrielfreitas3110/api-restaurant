@@ -4,6 +4,7 @@ import com.example.apirestaurant.model.Order;
 import com.example.apirestaurant.model.OrderItem;
 import com.example.apirestaurant.model.Product;
 import com.example.apirestaurant.model.SlipPayment;
+import com.example.apirestaurant.model.dto.request.OrderItemRequestDto;
 import com.example.apirestaurant.model.dto.request.OrderRequestDto;
 import com.example.apirestaurant.model.dto.response.OrderResponseDto;
 import com.example.apirestaurant.model.enums.PaymentStatusEnum;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,27 +57,33 @@ public class OrderService {
 
     @Transactional
     public OrderResponseDto create(OrderRequestDto orderRequestDto) {
+        Order order = modelMapper.map(orderRequestDto, Order.class);
         Date date = new Date();
-        orderRequestDto.getPayment().setPaymentStatus(PaymentStatusEnum.PENDING);
-        orderRequestDto.getPayment().setOrder(modelMapper.map(orderRequestDto, Order.class));
+        order.setInstant(date);
+        order.getPayment().setPaymentStatus(PaymentStatusEnum.PENDING);
+        order.getPayment().setOrder(order);
         if(orderRequestDto.getPayment() instanceof SlipPayment) {
             SlipPayment slipPayment = (SlipPayment) orderRequestDto.getPayment();
             slipPaymentService.completeSlipPayment(slipPayment, date);
         }
-        Order order = modelMapper.map(orderRequestDto, Order.class);
-        order.setInstant(date);
         order.setClient(clientService.getClientById(order.getClient().getId()));
+        var address = order.getClient().getAddresses().stream()
+                .filter(a -> a.getId().equals(orderRequestDto.getDeliveryAddress().getId())).findFirst().get();
+        order.setDeliveryAddress(address);
         order = orderRepository.save(order);
-        OrderResponseDto orderResponseDto = modelMapper.map(order, OrderResponseDto.class);
-        paymentService.create(orderResponseDto.getPayment());
-        for(OrderItem oi : orderResponseDto.getItens()) {
-            Product p = productService.getProductById(oi.getProduct().getId());
-            oi.setProduct(p);
-            oi.setDiscount(0.0);
-            oi.setPrice(p.getPrice());
-            oi.setOrder(modelMapper.map(orderResponseDto, Order.class));
+        paymentService.create(orderRequestDto.getPayment());
+        List<OrderItem> orderItems = new ArrayList<>();
+        for(OrderItemRequestDto oi : orderRequestDto.getItens()) {
+            OrderItem orderItem = new OrderItem();
+            orderItem.setProduct(modelMapper.map(oi.getProduct(), Product.class));
+            orderItem.setDiscount(0.0);
+            orderItem.setQuantity(oi.getQuantity());
+            orderItem.setPrice(productService.getProductById(oi.getProduct().getId()).getPrice());
+            orderItem.setOrder(order);
+            orderItems.add(orderItem);
         }
-        orderItemService.create(orderResponseDto.getItens());
-        return orderResponseDto;
+        orderItemService.create(orderItems);
+        order.setItens(orderItems);
+        return modelMapper.map(order, OrderResponseDto.class);
     }
 }
