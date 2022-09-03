@@ -1,12 +1,22 @@
 package com.example.apirestaurant.service;
 
+import com.example.apirestaurant.model.Order;
+import com.example.apirestaurant.model.OrderItem;
+import com.example.apirestaurant.model.Product;
+import com.example.apirestaurant.model.SlipPayment;
+import com.example.apirestaurant.model.dto.request.OrderItemRequestDto;
+import com.example.apirestaurant.model.dto.request.OrderRequestDto;
 import com.example.apirestaurant.model.dto.response.OrderResponseDto;
+import com.example.apirestaurant.model.enums.PaymentStatusEnum;
 import com.example.apirestaurant.repository.OrderRepository;
 import com.example.apirestaurant.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +29,21 @@ public class OrderService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private SlipPaymentService slipPaymentService;
+
+    @Autowired
+    private PaymentService paymentService;
+
+    @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private OrderItemService orderItemService;
+
+    @Autowired
+    private ClientService clientService;
+
     public OrderResponseDto getById(Long id) {
         return modelMapper.map(orderRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Order not found! Id: " + id)), OrderResponseDto.class);
@@ -28,5 +53,37 @@ public class OrderService {
         return orderRepository.findByClientId(clientId).stream()
                 .map(order -> modelMapper.map(order, OrderResponseDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public OrderResponseDto create(OrderRequestDto orderRequestDto) {
+        Order order = modelMapper.map(orderRequestDto, Order.class);
+        Date date = new Date();
+        order.setInstant(date);
+        order.getPayment().setPaymentStatus(PaymentStatusEnum.PENDING);
+        order.getPayment().setOrder(order);
+        if(orderRequestDto.getPayment() instanceof SlipPayment) {
+            SlipPayment slipPayment = (SlipPayment) orderRequestDto.getPayment();
+            slipPaymentService.completeSlipPayment(slipPayment, date);
+        }
+        order.setClient(clientService.getClientById(order.getClient().getId()));
+        var address = order.getClient().getAddresses().stream()
+                .filter(a -> a.getId().equals(orderRequestDto.getDeliveryAddress().getId())).findFirst().get();
+        order.setDeliveryAddress(address);
+        order = orderRepository.save(order);
+        paymentService.create(orderRequestDto.getPayment());
+        List<OrderItem> orderItems = new ArrayList<>();
+        for(OrderItemRequestDto oi : orderRequestDto.getItens()) {
+            OrderItem orderItem = new OrderItem();
+            orderItem.setProduct(modelMapper.map(oi.getProduct(), Product.class));
+            orderItem.setDiscount(0.0);
+            orderItem.setQuantity(oi.getQuantity());
+            orderItem.setPrice(productService.getProductById(oi.getProduct().getId()).getPrice());
+            orderItem.setOrder(order);
+            orderItems.add(orderItem);
+        }
+        orderItemService.create(orderItems);
+        order.setItens(orderItems);
+        return modelMapper.map(order, OrderResponseDto.class);
     }
 }
