@@ -1,9 +1,9 @@
 package com.example.apirestaurant;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.boot.test.context.SpringBootTest;
 
-@ActiveProfiles("dev")
+@SpringBootTest
 class ApiRestaurantApplicationTests {
 
     @Test

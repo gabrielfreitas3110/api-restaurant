@@ -27,7 +27,8 @@ class CategoryTest {
         assertEquals(c.getId(), Optional.of(3L).get());
         c = Category.builder()
                 .id(3L)
-                .products(List.of(new Product(4L, "Pasta", 6.99, List.of(c)))).build();
+                .products(List.of(Product.builder()
+                .id(4L).name("Pasta").price(6.99).categories(List.of(c)).build())).build();
         assertEquals(c.getProducts().size(), 1);
         assertEquals(c.getProducts().get(0).getId(), Optional.of(4L).get());
         assertEquals(c.getProducts().get(0).getName(), "Pasta");

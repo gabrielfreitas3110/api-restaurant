@@ -1,11 +1,19 @@
 package com.example.apirestaurant.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "tb_product")
 public class Product {
@@ -28,7 +36,7 @@ public class Product {
     )
     private List<Category> categories;
 
-    @OneToMany(mappedBy = "id.product")
+    @OneToMany(mappedBy = "product")
     @JsonIgnore
     private List<OrderItem> orderItems;
 
@@ -39,56 +47,5 @@ public class Product {
             orders.add(orderItem.getOrder());
         }
         return orders;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public List<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
-    }
-
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
-    }
-
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
-
-    public Product() {
-    }
-
-    public Product(Long id, String name, Double price, List<Category> categories) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.categories = categories;
-        this.orderItems = orderItems;
     }
 }

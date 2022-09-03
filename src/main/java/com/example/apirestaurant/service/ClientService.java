@@ -105,9 +105,4 @@ public class ClientService {
         }
         clientRepository.deleteById(id);
     }
-
-    public Client getClientById(Long id) {
-        return clientRepository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundException("Client not found! Id: " + id));
-    }
 }

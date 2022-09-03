@@ -14,7 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     @Autowired
-    private ProductRepository productRepository;
+    ProductRepository productRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -32,7 +31,6 @@ public class ProductService {
     @Autowired
     private CategoryService categoryService;
 
-    @Transactional
     public ProductResponseDto create(ProductRequestDto productRequestDto) {
         Product p = modelMapper.map(productRequestDto, Product.class);
         verifyDuplicate(p.getName());
@@ -90,10 +88,5 @@ public class ProductService {
         name = name.replace(" ","");
         List<Category> categories = categoryService.getAllById(categoryIds);
         return productRepository.findDistinctByNameContainingIgnoreCaseAndCategoriesIn(name, categories, pageRequest).map(p -> modelMapper.map(p, ProductWithoutCategoryDto.class));
-    }
-
-    public Product getProductById(Long id) {
-        return productRepository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundException("Product not found! Id: " + id));
     }
 }

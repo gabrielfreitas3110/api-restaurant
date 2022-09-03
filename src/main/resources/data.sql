@@ -26,7 +26,7 @@ INSERT INTO tb_credit_card_payment(number_of_installemnts, order_id) VALUES (6, 
 INSERT INTO tb_slip_payment(due_date, pay_date, order_id) VALUES ('2022-05-28 16:38:00.0', '2022-06-28 16:35:00.0', 2);
 
 INSERT INTO tb_order_item(discount, quantity, price, order_id, product_id) VALUES
-(0.0, 3, 4.99, 1, 1), (0.0, 2, 3.00, 1, 3);
+(0.0, 1, 4.99, 1, 1), (0.0, 1, 3.00, 1, 3);
 
 INSERT INTO tb_category (name) VALUES
 ('Computing'), ('Office'), ('Household Linen'), ('Eletronics'), ('Gardening'), ('Decoration'), ('Perfumery') ;
