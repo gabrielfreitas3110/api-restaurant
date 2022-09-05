@@ -2,7 +2,6 @@ package com.example.apirestaurant.service;
 
 import com.example.apirestaurant.model.Order;
 import com.example.apirestaurant.model.OrderItem;
-import com.example.apirestaurant.model.Product;
 import com.example.apirestaurant.model.SlipPayment;
 import com.example.apirestaurant.model.dto.request.OrderItemRequestDto;
 import com.example.apirestaurant.model.dto.request.OrderRequestDto;
@@ -75,15 +74,16 @@ public class OrderService {
         List<OrderItem> orderItems = new ArrayList<>();
         for(OrderItemRequestDto oi : orderRequestDto.getItens()) {
             OrderItem orderItem = new OrderItem();
-            orderItem.setProduct(modelMapper.map(oi.getProduct(), Product.class));
+            orderItem.setProduct(productService.getProductById(oi.getProduct().getId()));
             orderItem.setDiscount(0.0);
             orderItem.setQuantity(oi.getQuantity());
-            orderItem.setPrice(productService.getProductById(oi.getProduct().getId()).getPrice());
+            orderItem.setPrice(orderItem.getProduct().getPrice());
             orderItem.setOrder(order);
             orderItems.add(orderItem);
         }
         orderItemService.create(orderItems);
         order.setItens(orderItems);
+        System.out.println(order);
         return modelMapper.map(order, OrderResponseDto.class);
     }
 }

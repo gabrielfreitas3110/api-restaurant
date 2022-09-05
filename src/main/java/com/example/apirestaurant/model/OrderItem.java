@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.Objects;
 
 @Entity
@@ -18,6 +20,7 @@ public class OrderItem {
     private Double discount;
     private Integer quantity;
     private Double price;
+    private final static String locale[] = {"pt", "BR"};
 
     public OrderItem() {
     }
@@ -96,5 +99,16 @@ public class OrderItem {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        final NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale(locale[0], locale[1]));
+        final StringBuilder sb = new StringBuilder();
+        sb.append(getProduct().getName()).append(", ");
+        sb.append("Qte: ").append(getQuantity()).append(", ");
+        sb.append("Unit price: ").append(nf.format(getPrice())).append(", ");
+        sb.append("Subtotal: ").append(nf.format(getSubTotal())).append("\n");
+        return sb.toString();
     }
 }
